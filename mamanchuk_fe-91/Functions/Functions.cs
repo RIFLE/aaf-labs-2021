@@ -67,7 +67,7 @@ namespace Functions
                     }
                 }
                 if( !(accumulator.Contains('\"') && (accumulator.Length == 2)) )
-                    wordsList.Add(new string(accumulator));
+                    wordsList.Add(new string(accumulator.ToArray()));
                 accumulator = "";
             }
             return;

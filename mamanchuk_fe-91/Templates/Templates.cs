@@ -10,7 +10,7 @@ namespace Templates
         //and other regex statuses for corresponding commands will have come
     }
 
-    class StaticFields
+    public class StaticFields
     {
         public static readonly string[] existingCommands = {"MENU", "CREATE", "INSERT", "CONTAINS", "SEARCH", "PC", "CLEAR", "EXIT"};
     }

@@ -71,7 +71,7 @@ namespace PrefixTrieLibrary
                         {
                             if( (checkIndex + word) == patternToCheck.Length) return true;
                         }
-                        if(currentPattern == patternToCheck && thisNode.childBranch == null)
+                        if((currentPattern == patternToCheck) && (thisNode.childBranch == null))
                         {
                             return true;
                         }
@@ -90,12 +90,11 @@ namespace PrefixTrieLibrary
                             {       
                                 return iteratingNode.Contains(patternToCheck, currentPattern);
                             }
-                            iteratingNode = (iteratingNode.anotherBranch == null)?
-                                                iteratingNode:iteratingNode.anotherBranch;
+                            iteratingNode = iteratingNode.anotherBranch;
                         }
-                        while(iteratingNode.anotherBranch != null); //While there exists another child
+                        while(iteratingNode != null); //While there exists another child
 
-                        if(iteratingNode.anotherBranch == null)
+                        if(iteratingNode == null)
                         {
                             return false;
                         }   
@@ -170,10 +169,9 @@ namespace PrefixTrieLibrary
                                 return iteratingNode.AddNode(patternToAdd, currentPattern);
                                  //other children are not needed to be looked through
                             }
-                            iteratingNode = (iteratingNode.anotherBranch == null)?
-                                             iteratingNode:iteratingNode.anotherBranch;
+                            iteratingNode = iteratingNode.anotherBranch;
                         }
-                        while(iteratingNode.anotherBranch != null); //While there exists another child
+                        while(!(iteratingNode == null)); //While there exists another child
 
                         if(iteratingNode.anotherBranch == null)
                         {   //If yet no branch match found
