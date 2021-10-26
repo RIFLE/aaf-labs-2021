@@ -12,6 +12,6 @@ namespace Templates
 
     public class StaticFields
     {
-        public static readonly string[] existingCommands = {"MENU", "CREATE", "INSERT", "CONTAINS", "SEARCH", "PC", "CLEAR", "EXIT"};
+        public static readonly string[] existingCommands = {"MENU", "CREATE", "INSERT", "CONTAINS", "SEARCH", "PRINT_TREE", "PC", "CLEAR", "EXIT"};
     }
 }

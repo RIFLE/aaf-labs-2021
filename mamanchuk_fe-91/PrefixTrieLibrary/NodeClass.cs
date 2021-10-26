@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using System.Collections.Generic;
 
 
@@ -46,6 +47,53 @@ namespace PrefixTrieLibrary
         {
             return this.parentBranch;
         }
+
+        public string GetTreeAsString()
+        {
+            StringBuilder buffer = new StringBuilder(50);
+            PrintTree(ref buffer, "", "");
+            return buffer.ToString();
+        }
+        
+        private void PrintTree(ref StringBuilder buffer, string prefix, string childrenPrefix)
+        {
+            buffer.Append(prefix);
+            if(this.wordsInNodeIndexed.Any())
+            {
+                StringBuilder valueWithIndexedWords = new StringBuilder(value);
+                wordsInNodeIndexed.Sort();
+                for(int itCount = 0; itCount < wordsInNodeIndexed.Count(); itCount++)
+                {
+                    valueWithIndexedWords.Insert(wordsInNodeIndexed[itCount] + itCount, "*");
+                }
+                buffer.Append(valueWithIndexedWords.ToString());
+            }
+            else
+            {
+                buffer.Append(value);
+            }
+            buffer.Append('\n');
+            
+            Node itNode;
+            if(!(this.childBranch == null)) itNode = this.childBranch;
+            else return;
+
+            Node nextNode = itNode;
+            while(!(nextNode == null))
+            {
+                
+                if (!(nextNode.anotherBranch == null)) //changed
+                {
+                    nextNode.PrintTree(ref buffer, childrenPrefix + "├── ", childrenPrefix + "│   ");
+                }
+                else
+                {
+                    nextNode.PrintTree(ref buffer, childrenPrefix + "└── ", childrenPrefix + "    ");
+                }
+                nextNode = nextNode.anotherBranch;
+            }
+        }
+
         public bool Contains(string patternToCheck, string followingLevelPattern = "")
         {
             Node thisNode = this;
@@ -108,6 +156,7 @@ namespace PrefixTrieLibrary
             }
             return false;
         }
+
         public CompletionStatus AddNode(string patternToAdd, string followingLevelPattern = "") //brainfuck
         {   
             Node thisNode = this; //It is needed to operate within this
@@ -292,5 +341,6 @@ namespace PrefixTrieLibrary
             }
             else return CompletionStatus.NULL;
         }
+
     }
 }

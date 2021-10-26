@@ -12,7 +12,6 @@ using RCS = Templates.RegexCheckStatus;
     {
         static void Terminal(Dictionary<string,Node> TrieSet)
         {
-            Console.Clear();
             Console.WriteLine("Welcome to terminal imitator. Enter \"MENU;\" to see available commands.");
             
             string commandStr = "";
@@ -100,7 +99,24 @@ using RCS = Templates.RegexCheckStatus;
                         break;
                     }
 
-                    case "pc": //print command, only for development purposes
+                    case "PRINT_TREE":
+                    {
+                        commandInArgs = commandList.Select(word => {word = word.Replace("\"", ""); return word;}).ToArray();
+
+                        if(TrieSet.ContainsKey(commandInArgs[1]))
+                        {
+                            Console.Write("Tree for \"{0}\"", commandInArgs[1]);
+                            string treeStr = TrieSet[commandInArgs[1]].GetTreeAsString();
+                            Console.Write("{0}", (treeStr != "\n") ? treeStr:"\n*empty*\n");
+                        }
+                        else
+                        {
+                            Console.WriteLine("No trie with the name \"{0}\" exists.", commandInArgs[1]);
+                        }
+                        break;
+                    }
+
+                    case "PC": //print command, only for development purposes
                     {
                         foreach(string word in commandInArgs)
                             Console.Write(word + " ");
@@ -132,16 +148,14 @@ using RCS = Templates.RegexCheckStatus;
             try
             {  
                 Dictionary<string,Node> TrieSet = new Dictionary<string, Node>();
-
                 Terminal(TrieSet);
 
-                //My trie constructor was tested here...
+                
+                //UNCOMMENT NEXT SECTION TO CREATE AND PRINT TREE INSTANTANIOUSLY
 
                 // Node prefixTree = new Node();
-                
-                // /*for building a trie [success]*/
 
-                // prefixTree.AddNode("SomeText");
+                // prefixTree.AddNode("SomeText");     /*for building a trie [success]*/
                 // prefixTree.AddNode("Some");
                 // prefixTree.AddNode("SomeTex");
                 // prefixTree.AddNode("SomeTextAnd");
@@ -153,24 +167,22 @@ using RCS = Templates.RegexCheckStatus;
                 // prefixTree.AddNode("Lol");
                 // prefixTree.AddNode("Lolkek");
                 // prefixTree.AddNode("Lolkekcheburek");
+                // prefixTree.AddNode("Lolkekcheburs");
+                // prefixTree.AddNode("Lolkekchebur");
 
-                
-                /*test trie, separating descend [success]*/
-
-                // prefixTree.AddNode("abc");
+                // prefixTree.AddNode("abc");          /*test trie, separating descend [success]*/
                 // prefixTree.AddNode("abcd");
                 // prefixTree.AddNode("abce");
                 // prefixTree.AddNode("abf");
                 
-                
-                /*test trie, no thisNode descent [success]*/
-
-                // prefixTree.AddNode("ab");
+                // prefixTree.AddNode("ab");           /*test trie, no thisNode descent [success]*/
                 // prefixTree.AddNode("stugl");
                 // prefixTree.AddNode("stus");
                 // prefixTree.AddNode("m");
                 // prefixTree.AddNode("str");
                 // prefixTree.AddNode("stug");
+
+                // Console.WriteLine(prefixTree.GetTreeAsString());    //Print the tree :)
 
                 return;
             }

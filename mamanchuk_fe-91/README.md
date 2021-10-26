@@ -12,16 +12,17 @@
 3. 25.12 or till the very end
     - PRINT_TREE and full UX
 
-# Prefix Tree V1.0
-This is the first release of my original idea that is about implementation of a simple datastructure for the purpose of prefix tree.
+# Prefix Tree V2.0
+This is the second release of my original idea that is about implementation of a simple datastructure for the purpose of prefix tree.
 Available concept of a command line.
-Basic system operations. Basic pTree operations.
-Logics that is being designed to work with conventional user.
+Basic system operations. Some pTree operations.
+Advanced logics that is being designed to work with conventional user.
 
 Operations with pTree sets available:
 	- CREATE "set_name"; 
     - INSERT "set_name" "value";
     - CONTAINS "set_name" "value";
+    - PRINT_TREE "set_name";
 
 System operations:
     - MENU;

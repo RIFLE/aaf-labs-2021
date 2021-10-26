@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 
-using PrefixTrieLibrary;
 using Templates;
 using RCS = Templates.RegexCheckStatus;
 
@@ -16,7 +15,7 @@ namespace Functions
             Console.WriteLine("Operations available:\n"
                             + "- CREATE 'set_name'\n" 
                             + "- INSERT 'set_name' 'value'\n"
-            //                + "- PRINT_TREE 'set_name'\n"
+                            + "- PRINT_TREE 'set_name'\n"
                             + "- CONTAINS 'set_name' 'value'\n"
             //                + "- SEARCH set_name [WHERE query] [ASC | DESC]\n\n"
                             + "System operations:\n"
@@ -94,7 +93,7 @@ namespace Functions
                 
                 if(((commandStr.Split('\"').Length - 1) % 2) != 0) // :D
                 {
-                    Console.WriteLine("Error: each char [\"] has to be paired (bad syntax)");
+                    Console.WriteLine("Syntax error: each char [\"] has to be paired.");
                     continue; 
                 }
 
@@ -102,7 +101,7 @@ namespace Functions
                 {
                     if(commandStr.Contains(_char))
                     {
-                        Console.WriteLine("Forbidden character [{0}]", _char);
+                        Console.WriteLine("Syntax error: forbidden character [{0}].", _char);
                         break;
                     }
                     else
@@ -135,28 +134,35 @@ namespace Functions
             {
                 case "MENU":
                 {
-                    commandTemplate = new Regex(@"^(\s|\t){0,}MENU(\s|\t){0,};$", RegexOptions.IgnoreCase);
+                    commandTemplate = new Regex(@"^(\s|\t){0,}MENU(\s|\t){0,};$");
                     if(commandTemplate.IsMatch(cmdPrefix)) return RCS.REGEX_SUCCESS;
                     else break;
                 }
                 
                 case "CREATE":
                 {
-                    commandTemplate = new Regex(@"^(\s|\t){0,}CREATE(\s|\t){1,}""(\w|\s){1,}""(\s|\t){0,};$", RegexOptions.IgnoreCase);
+                    commandTemplate = new Regex(@"^(\s|\t){0,}CREATE(\s|\t){1,}""(\w|\s){1,}""(\s|\t){0,};$");
                     if(commandTemplate.IsMatch(cmdPrefix)) return RCS.REGEX_SUCCESS;
                     else break;
                 }
                 
                 case "INSERT":
                 {
-                    commandTemplate = new Regex(@"^(\s|\t){0,}INSERT(\s|\t){1,}""(\w|\s){1,}""(\s|\t){1,}""(\w|\s){1,}""(\s|\t){0,};$", RegexOptions.IgnoreCase);
+                    commandTemplate = new Regex(@"^(\s|\t){0,}INSERT(\s|\t){1,}""(\w|\s){1,}""(\s|\t){1,}""(\w|\s){1,}""(\s|\t){0,};$");
                     if(commandTemplate.IsMatch(cmdPrefix)) return RCS.REGEX_SUCCESS;
                     else break;
                 }
 
                 case "CONTAINS":
                 {
-                    commandTemplate = new Regex(@"^(\s|\t){0,}CONTAINS(\s|\t){1,}""(\w|\s){1,}""(\s|\t){1,}""(\w|\s){1,}""(\s|\t){0,};$",RegexOptions.IgnoreCase);
+                    commandTemplate = new Regex(@"^(\s|\t){0,}CONTAINS(\s|\t){1,}""(\w|\s){1,}""(\s|\t){1,}""(\w|\s){1,}""(\s|\t){0,};$");
+                    if(commandTemplate.IsMatch(cmdPrefix)) return RCS.REGEX_SUCCESS;
+                    else break;
+                }
+
+                case "PRINT_TREE":
+                {
+                     commandTemplate = new Regex(@"^(\s|\t){0,}PRINT_TREE(\s|\t){1,}""(\w|\s){1,}""(\s|\t){0,};$");
                     if(commandTemplate.IsMatch(cmdPrefix)) return RCS.REGEX_SUCCESS;
                     else break;
                 }
@@ -166,23 +172,23 @@ namespace Functions
                     break;
                 }
                 
-                case "pc":
+                case "PC":
                 {
-                    commandTemplate = new Regex(@"^(\s|\t){0,}pc(\s|\t){0,};$", RegexOptions.IgnoreCase);
+                    commandTemplate = new Regex(@"^(\s|\t){0,}PC(\s|\t){0,};$");
                     if(commandTemplate.IsMatch(cmdPrefix)) return RCS.REGEX_SUCCESS;
                     else break;
                 }
                 
                 case "CLEAR":
                 {
-                    commandTemplate = new Regex(@"^(\s|\t){0,}CLEAR(\s|\t){0,};$", RegexOptions.IgnoreCase);
+                    commandTemplate = new Regex(@"^(\s|\t){0,}CLEAR(\s|\t){0,};$");
                     if(commandTemplate.IsMatch(cmdPrefix)) return RCS.REGEX_SUCCESS;
                     else break;
                 }
                 
                 case "EXIT":
                 {
-                    commandTemplate = new Regex(@"^(\s|\t){0,}EXIT(\s|\t){0,};$", RegexOptions.IgnoreCase);
+                    commandTemplate = new Regex(@"^(\s|\t){0,}EXIT(\s|\t){0,};$");
                     if(commandTemplate.IsMatch(cmdPrefix)) return RCS.REGEX_SUCCESS;
                     else break;
                 }
