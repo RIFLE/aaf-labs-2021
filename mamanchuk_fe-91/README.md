@@ -25,21 +25,19 @@ Available concept of a command line.
 Basic system operations. Some pTree operations.
 Advanced logics that is being designed to work with conventional user.
 
-Operations with pTree sets available:
-	- CREATE `[RANGE] set_name_1 [set_name_2 ...]`; <br />
-    - INSERT `[RANGE] set_name_1 [set_name_2 ...] "word_1" ["word_2" ...]`; <br />
-    - CONTAINS `[RANGE] set_name_1 [set_name_2 ...] "word_1" ["word_2" ...]`; <br />
-    - PRINT_TREE `[RANGE] set_name_1 [set_name_2 ...]`; 
+Operations with pTree sets available: <br />
+    - `CREATE [RANGE] set_name_1 [set_name_2 ...];` <br />
+    - `INSERT [RANGE] set_name_1 [set_name_2 ...] "word_1" ["word_2" ...];` <br />
+    - `CONTAINS [RANGE] set_name_1 [set_name_2 ...] "word_1" ["word_2" ...];` <br />
+    - `PRINT_TREE [RANGE] set_name_1 [set_name_2 ...];` 
 
-System operations:
-    - MENU; <br />
-    - CLEAR; <br />
-    - EXIT;
+System operations: <br />
+    - `MENU;` <br />
+    - `CLEAR;` <br />
+    - `EXIT;`
 
-Quick notes:
+Quick notes: <br />
     Commands must include ';' at some point. <br /> 
     All parameter words must be embraced with "quotes", everything else must not. <br />
     For command titles and key words letter case is ignored.
-
-
-
+    
