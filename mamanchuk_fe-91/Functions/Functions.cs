@@ -160,7 +160,7 @@ namespace Functions
 
                 case "PRINT_TREE":
                     {
-                        commandTemplate = new Regex(@"^(\s|\t){0,}PRINT_TREE(\s|\t){1,}""(\w|\s){1,}""(\s|\t){0,};$");
+                        commandTemplate = new Regex(@"^PRINT_TREE(\s|\t){1,}(\w){1,}(\s|\t){0,};$");
                         if (commandTemplate.IsMatch(cmdPrefix)) return RCStatus.NORMAL;
                         commandTemplate = new Regex(@"^PRINT_TREE(\s|\t){1,}RANGE((\s|\t){1,}(\w){1,}){1,}(\s|\t){0,};$");
                         if(commandTemplate.IsMatch(cmdPrefix)) return RCStatus.HAS_RANGE;

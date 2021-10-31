@@ -22,18 +22,20 @@ namespace PrefixTrieLibrary
             ALREADY_EXISTS = 2,
             NULL = 0
         }
+
         public Node()
         {
             anotherBranch = childBranch = parentBranch = null;
             value = "";
             wordsInNodeIndexed = new List<int>();
         }
+
         private void SetValue(string valueContainer)
         {
             this.value = valueContainer;
         }
 
-        private string GetValue()
+        public string GetValue()
         {
             return this.value;
         }
@@ -43,7 +45,7 @@ namespace PrefixTrieLibrary
             this.parentBranch = parentNodeContainer;
         }
 
-        private Node GetParentNode()
+        public Node GetParentNode()
         {
             return this.parentBranch;
         }
@@ -81,7 +83,6 @@ namespace PrefixTrieLibrary
             Node nextNode = itNode;
             while (!(nextNode == null))
             {
-
                 if (!(nextNode.anotherBranch == null)) //changed
                 {
                     nextNode.PrintTree(ref buffer, childrenPrefix + "├── ", childrenPrefix + "│   ");
@@ -177,10 +178,10 @@ namespace PrefixTrieLibrary
             while (thisNode != null)
             {
                 if (patternToAdd.StartsWith(currentPattern + thisNode.value[0])) //if matches a single char ->
-                {                                                               //its place is in this branch
+                {                                                                //its place is in this branch
                     currentPattern += thisNode.value;
                     if (currentPattern.StartsWith(patternToAdd)) //Checking if pattern is itself
-                    {                                           //a prefix match for current node.
+                    {                                            //a prefix match for current node.
                         //evaluate position of a word to add it into a list of existing words
                         int rest = thisNode.value.Length - (currentPattern.Length - patternToAdd.Length);
                         if (thisNode.childBranch == null && rest == thisNode.value.Length)
@@ -195,7 +196,7 @@ namespace PrefixTrieLibrary
                         return CompletionStatus.ALREADY_EXISTS;
                     }
                     else if (patternToAdd.StartsWith(currentPattern)) /*exactly starts with pattern*/
-                    {                                                //example: ADVERTisement:ADVERT
+                    {                                                 //example: ADVERTisement:ADVERT
                         Node iteratingNode = thisNode.childBranch; //needed as an iterator
                         if (iteratingNode == null)
                         {
@@ -285,11 +286,10 @@ namespace PrefixTrieLibrary
                                                                            thisNode.value.Length - commonPatternLength);
                                 thisNode.SetValue(leftover);                                            //Third setNode
 
-                                if (thisNode.wordsInNodeIndexed.Any()) //If there is any list member -> reevaluate it's position
+                                if (thisNode.wordsInNodeIndexed.Any()) //If there is any list member -> reevaluate and reset
                                 {
                                     objectForCommonPattern.wordsInNodeIndexed = thisNode.wordsInNodeIndexed
                                                                                 .Where(word => (word <= commonPatternLength)).ToList();
-
                                     thisNode.wordsInNodeIndexed.RemoveAll(word => (word <= commonPatternLength));
                                     thisNode.wordsInNodeIndexed = thisNode.wordsInNodeIndexed
                                                                   .Select(word => { word -= commonPatternLength; return word; }).ToList();
@@ -311,8 +311,8 @@ namespace PrefixTrieLibrary
                                 objectForCommonPattern.parentBranch = thisNode.parentBranch;
                                 objectForCommonPattern.anotherBranch = thisNode.anotherBranch;
                                 objectForCommonPattern.childBranch = thisNode;
-                                thisNode.parentBranch = objectForCommonPattern; //I indicate this line as being not a needed one for every case, however
-                                thisNode.anotherBranch = objectForNewPattern;
+                                thisNode.parentBranch = objectForCommonPattern; //I'm to lazy to use some constructor here
+                                thisNode.anotherBranch = objectForNewPattern;   //Plz don't hate me
                                 objectForNewPattern.parentBranch = thisNode;
 
                                 if (objectForCommonPattern.anotherBranch != null)
@@ -334,7 +334,7 @@ namespace PrefixTrieLibrary
             {
                 thisNode.anotherBranch = new Node();
                 patternToAdd = patternToAdd.Substring(currentPattern.Length,
-                                                       patternToAdd.Length - currentPattern.Length); //right
+                                                      patternToAdd.Length - currentPattern.Length);
                 thisNode.anotherBranch.SetValue(patternToAdd);
                 thisNode.anotherBranch.SetParentNode(thisNode);
                 return CompletionStatus.NEW_ADDED;

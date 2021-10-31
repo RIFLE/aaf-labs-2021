@@ -50,7 +50,7 @@ class Program
 
                 case "CREATE":
                     {
-                        foreach(string word in commandInArgs.Skip(1 + ( (checkResult == RCStatus.HAS_RANGE) ? 1 : 0) )) //XD
+                        foreach (string word in commandInArgs.Skip(1 + ((checkResult == RCStatus.HAS_RANGE) ? 1 : 0))) //XD
                         {
                             if (!TrieSet.ContainsKey(word))
                             {
@@ -68,31 +68,34 @@ class Program
 
                 case "INSERT":
                     {
-                        if(checkResult == RCStatus.HAS_RANGE)
+                        if (checkResult == RCStatus.HAS_RANGE)
                         {
                             Regex firstWord = new Regex(@"^""(\w){0,}""$");
                             int firstWordIndex = Array.FindIndex(commandInArgs, word => firstWord.IsMatch(word));
                             int wordsCount = commandInArgs.Length - firstWordIndex;
                             int treesCount = commandInArgs.Length - wordsCount - 2;
                             commandInArgs = commandList.Select(word => { word = word.Replace("\"", ""); return word; }).ToArray();
-                            for(int treeIndex = 0; treeIndex < treesCount; treeIndex++)
+                            for (int currentTreeIndex = 0; currentTreeIndex < treesCount; currentTreeIndex++)
                             {
-                                if (TrieSet.ContainsKey(commandInArgs[treeIndex+2]))
+                                if (TrieSet.ContainsKey(commandInArgs[currentTreeIndex + 2]))
                                 {
-                                    for(int wordIndex = 0; wordIndex < wordsCount; wordIndex++)
+                                    for (int currentWordIndex = 0; currentWordIndex < wordsCount; currentWordIndex++)
                                     {
-                                        Node.CompletionStatus cs = TrieSet[commandInArgs[treeIndex+2]].AddNode(commandInArgs[firstWordIndex + wordIndex]);
-                                        
+                                        Node.CompletionStatus cs = TrieSet[commandInArgs[currentTreeIndex + 2]]
+                                                                   .AddNode(commandInArgs[firstWordIndex + currentWordIndex]);
+
                                         if (cs == CStatus.NULL) throw new ApplicationException(message: "Logical error: bad return case for AddNode().");
 
-                                        Console.WriteLine("Node \"{1}\" {2} \"{0}\"", commandInArgs[treeIndex + 2], commandInArgs[firstWordIndex + wordIndex],
-                                                        (cs == CStatus.NEW_ADDED) ? "was added to" : "already exists in");
+                                        Console.WriteLine("Node \"{1}\" {2} \"{0}\"",
+                                                          commandInArgs[currentTreeIndex + 2],
+                                                          commandInArgs[firstWordIndex + currentWordIndex],
+                                                          (cs == CStatus.NEW_ADDED) ? "was added to" : "already exists in");
                                     }
-                                    if(treeIndex < treesCount - 1) Console.WriteLine(); 
+                                    if (currentTreeIndex < treesCount - 1) Console.WriteLine();
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"No trie with the name \"{commandInArgs[treeIndex+2]}\" exists.");
+                                    Console.WriteLine($"No trie with the name \"{commandInArgs[currentTreeIndex + 2]}\" exists.");
                                 }
                             }
                         }
@@ -118,7 +121,7 @@ class Program
 
                 case "CONTAINS":
                     {
-                        if(checkResult == RCStatus.HAS_RANGE)
+                        if (checkResult == RCStatus.HAS_RANGE)
                         {
                             Regex firstWord = new Regex(@"^""(\w){0,}""$");
                             int firstWordIndex = Array.FindIndex(commandInArgs, word => firstWord.IsMatch(word));
@@ -126,22 +129,24 @@ class Program
                             int treesCount = commandInArgs.Length - wordsCount - 2;
                             commandInArgs = commandList.Select(word => { word = word.Replace("\"", ""); return word; }).ToArray();
                             bool containmentStatus;
-                            for(int treeIndex = 0; treeIndex < treesCount; treeIndex++)
+                            for (int currentTreeIndex = 0; currentTreeIndex < treesCount; currentTreeIndex++)
                             {
-                                if (TrieSet.ContainsKey(commandInArgs[treeIndex+2]))
+                                if (TrieSet.ContainsKey(commandInArgs[currentTreeIndex + 2]))
                                 {
-                                    for(int wordIndex = 0; wordIndex < wordsCount; wordIndex++)
+                                    for (int currentWordIndex = 0; currentWordIndex < wordsCount; currentWordIndex++)
                                     {
-                                        containmentStatus = TrieSet[commandInArgs[treeIndex+2]].Contains(commandInArgs[firstWordIndex + wordIndex]);
-                                        
+                                        containmentStatus = TrieSet[commandInArgs[currentTreeIndex + 2]].Contains(commandInArgs[firstWordIndex + currentWordIndex]);
+
                                         Console.WriteLine("Containment status: word \"{1}\" {2} in the tree \"{0}\".",
-                                                  commandInArgs[treeIndex + 2], commandInArgs[firstWordIndex + wordIndex], containmentStatus ? "EXISTS" : "DOES NOT EXIST");
+                                                         commandInArgs[currentTreeIndex + 2],
+                                                         commandInArgs[firstWordIndex + currentWordIndex],
+                                                         containmentStatus ? "EXISTS" : "DOES NOT EXIST");
                                     }
-                                    if(treeIndex < treesCount - 1) Console.WriteLine(); 
+                                    if (currentTreeIndex < treesCount - 1) Console.WriteLine();
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"No trie with the name \"{commandInArgs[treeIndex+2]}\" exists.");
+                                    Console.WriteLine($"No trie with the name \"{commandInArgs[currentTreeIndex + 2]}\" exists.");
                                 }
                             }
                         }
@@ -165,7 +170,7 @@ class Program
 
                 case "PRINT_TREE":
                     {
-                        foreach(string treeName in commandInArgs.Skip(1 + ( (checkResult == RCStatus.HAS_RANGE) ? 1 : 0) )) //XD
+                        foreach (string treeName in commandInArgs.Skip(1 + ((checkResult == RCStatus.HAS_RANGE) ? 1 : 0))) //XD
                         {
                             if (TrieSet.ContainsKey(treeName))
                             {
@@ -213,17 +218,16 @@ class Program
         if (!TrieSet.ContainsKey(treeName))
         {
             Node testTree = new Node();
-
             TrieSet.Add(treeName, testTree);
 
-            string[] testWords = {"SomeText","Some", "SomeTex", "SomeTextAnd", "SomeTextAndOther", "SomeTextOr", "Different", "SomeTextAndOt", "Diff", 
+            string[] testWords = {"SomeText","Some", "SomeTex", "SomeTextAnd", "SomeTextAndOther", "SomeTextOr", "Different", "SomeTextAndOt", "Diff",
             "Lol", "Lolkek", "Lolkekcheburek", "Lolkekcheburs", "Lolkekchebur", "abc", "abcd", "abce", "abf", "ab", "stugl", "stus", "m", "str", "stug",
-            "abc", "abcdefUCK", "abcdes", "abcdef", "abcffe", "abvdsf", "aghrg", "abcdggth", "b"};
+            "abc", "abcdefUCC", "abcdes", "abcdef", "abcffe", "abvdsf", "aghrg", "abcdggth", "b"};
 
-            Console.Write($"Tree for \"{treeName}\"");
-            foreach(string word in testWords)
+            foreach (string word in testWords)
                 TrieSet[treeName].AddNode(word);     //Building the trie
 
+            Console.Write($"Tree for \"{treeName}\"");
             Console.WriteLine(TrieSet[treeName].GetTreeAsString());    //Printing the tree :)
         }
         return;
@@ -234,12 +238,12 @@ class Program
         try
         {
             Dictionary<string, Node> TrieSet = new Dictionary<string, Node>();
-            
+
             //UNCOMMENT NEXT LINE TO CREATE AND PRINT TREE INSTANTENIOUSLY
             //GetAndPrintTestTree(ref TrieSet, "Test");
-            
+
             Terminal(TrieSet);
-            
+
             return;
         }
         catch (Exception ex)
