@@ -16,28 +16,29 @@ DEADlines:
 3. **25.12** or till the very end
     - PRINT_TREE and full UX
 
-Prefix Tree V2.1
+Prefix Tree V3.0A
 ----------------
-Current update: lots of bug fixes and improved ux.
+Current update: new features introduced.
 
-This is the third release of my original idea that is about implementation of a simple datastructure for the purpose of prefix tree.
-Available concept of a command line.
-Basic system operations. Some pTree operations.
-Advanced logics that is being designed to work with conventional user.
+This is the fourth massive update of my original idea that is about implementation of a simple datastructure for the purpose of prefix tree.<br />
+Available concept of a command line.<br />
+Basic system operations. pTree operations, listed below.<br />
+Advanced logics that is being designed to work with user.
 
 Operations with pTree sets available: <br />
-    - `CREATE [RANGE] set_name_1 [set_name_2 ...];` <br />
-    - `INSERT [RANGE] set_name_1 [set_name_2 ...] "word_1" ["word_2" ...];` <br />
-    - `CONTAINS [RANGE] set_name_1 [set_name_2 ...] "word_1" ["word_2" ...];` <br />
-    - `PRINT_TREE [RANGE] set_name_1 [set_name_2 ...];` 
+    - `CREATE [RANGE] set_name_1 [set_name_2 ...];                           ` <br />
+    - `INSERT [RANGE] set_name_1 [set_name_2 ...] "word_1" ["word_2" ...];   ` <br />
+    - `SEARCH [RANGE] set_name_1 [set_name_2 ...] [WHERE query] [ASC | DESC];` <br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`query:= WHERE BETWEEN "from","to" | WHERE MATCH "word"         ` <br />
+    - `CONTAINS [RANGE] set_name_1 [set_name_2 ...] "word_1" ["word_2" ...]; ` <br />
+    - `PRINT_TREE [RANGE] set_name_1 [set_name_2 ...];                       ` 
 
 System operations: <br />
-    - `MENU;` <br />
+    - `MENU; ` <br />
     - `CLEAR;` <br />
-    - `EXIT;`
+    - `EXIT; `
 
 Quick notes: <br />
     Commands must include ';' at some point. <br /> 
     All parameter words must be embraced with "quotes", everything else must not. <br />
     For command titles and key words letter case is ignored.
-    

@@ -13,14 +13,18 @@ namespace PrefixTrieLibrary
         private Node parentBranch;
         private string value;
         private List<int> wordsInNodeIndexed; //It is needed to make a tree look
-                                      //more "simple"; example: if u add words
-                                      //ad, advert, advertisment, then
-                                      //a corresponding Node will look like ad*vert*isement*  
+                                              //more "simple"; example: if u add words
+                                              //ad, advert, advertisment, then
+                                              //a corresponding Node will look like ad*vert*isement*  
         public enum CompletionStatus
         {
             NEW_ADDED = 1,
             ALREADY_EXISTS = 2,
-            NULL = 0
+            NULL = 0,
+            EMPTY_TREE = -1,
+            NULL_OR_EMPTY_PARAM = -2,
+            NO_MATCH_FOUND = -3,
+            INVALID_PARAMS = -4
         }
 
         public Node()
@@ -92,6 +96,139 @@ namespace PrefixTrieLibrary
                     nextNode.PrintTree(ref buffer, childrenPrefix + "└── ", childrenPrefix + "    ");
                 }
                 nextNode = nextNode.anotherBranch;
+            }
+        }
+
+        public CompletionStatus GetMatchesList(ref List<string> wordsList, string pattern1, string pattern2 = "")
+        {
+            if (this.childBranch == null)
+            {
+                return CompletionStatus.EMPTY_TREE;
+            }
+            else if (wordsList == null)
+            {
+                wordsList = new List<string>() { };
+            }
+            else if (wordsList.Any())
+            {
+                wordsList.Clear();
+            }
+
+            if (pattern2 == "")
+            {
+                if (pattern1 == null || pattern1 == "")
+                {
+                    return CompletionStatus.NULL_OR_EMPTY_PARAM;
+                }
+                else
+                {
+                    string @regexPattern = "^" + (@pattern1).Replace("?", @"(\w|\s|\t)").Replace("*", @"(\w|\s|\t){0,}") + "$";
+                    var matchFinder = new System.Text.RegularExpressions.Regex(@regexPattern);
+                    this.Search(ref wordsList, ref matchFinder, ref @pattern1);
+                }
+            }
+            else if (pattern2 != "" && pattern2.StartsWith(pattern1))
+            {
+                //if(this.Contains(pattern1) && this.Contains(pattern2))    //only if we want to check if there are these exact examples
+                //in the tree to find something exactly between existing nodes;
+                //However, we yet can drop it and start search as how it is checked so far
+                this.Search(ref wordsList, ref pattern1, ref pattern2);
+            }
+            else if (!pattern2.StartsWith(pattern1))
+            {
+                return CompletionStatus.INVALID_PARAMS;
+            }
+            if (wordsList.Any()) return CompletionStatus.NEW_ADDED;
+            else return CompletionStatus.NO_MATCH_FOUND;
+        }
+
+        private void Search(ref List<string> wordsList,
+                            ref System.Text.RegularExpressions.Regex matchFinder,
+                            ref string pattern,
+                            string followingLevelPattern = "")   //matches for single pattern
+        {
+
+            if (this.wordsInNodeIndexed.Any())
+            {
+                string exPattern = String.Empty;
+                foreach (int word in wordsInNodeIndexed)
+                {
+                    if (matchFinder.IsMatch(exPattern = followingLevelPattern + this.value.Substring(0, word)))
+                    {
+                        wordsList.Add(exPattern);
+                    }
+                }
+            }
+
+            followingLevelPattern += this.value;
+
+            if (this.childBranch == null)
+            {
+                if (matchFinder.IsMatch(followingLevelPattern))
+                {
+                    wordsList.Add(followingLevelPattern);
+                }
+            }
+
+            Node itNode;
+            if (!(this.childBranch == null)) itNode = this.childBranch;
+            else return;
+
+            while (!(itNode == null))
+            {
+                itNode.Search(ref wordsList, ref matchFinder, ref pattern, followingLevelPattern);
+                itNode = itNode.anotherBranch;
+            }
+        }
+
+        private void Search(ref List<string> wordsList,
+                            ref string begPattern,
+                            ref string endPattern,
+                            string followingLevelPattern = "")           //overload for matches between two patterns
+        {
+            if (followingLevelPattern.Length > endPattern.Length)
+            {
+                return;
+            }
+            else if (followingLevelPattern.Length + this.value.Length >= begPattern.Length)
+            {
+                if (this.wordsInNodeIndexed.Any())
+                {
+                    string exPattern = String.Empty;
+                    foreach (int word in wordsInNodeIndexed)
+                    {
+                        exPattern = followingLevelPattern + this.value.Substring(0, word);
+                        if (exPattern.StartsWith(begPattern) && endPattern.StartsWith(exPattern))
+                        {
+                            wordsList.Add(exPattern);
+                        }
+                    }
+                }
+
+                followingLevelPattern += this.value;
+
+                if (this.childBranch == null)
+                {
+                    if (followingLevelPattern.StartsWith(begPattern) && endPattern.StartsWith(followingLevelPattern))
+                    {
+                        wordsList.Add(followingLevelPattern);
+                    }
+                }
+            }
+            else
+            {
+                followingLevelPattern += this.value;
+            }
+
+            Node itNode;
+            if (!(this.childBranch == null)) itNode = this.childBranch;
+            else return;
+
+            while (!(itNode == null))
+            {
+                itNode.Search(ref wordsList, ref begPattern, ref endPattern, followingLevelPattern);
+
+                itNode = itNode.anotherBranch;
             }
         }
 
@@ -311,8 +448,8 @@ namespace PrefixTrieLibrary
                                 objectForCommonPattern.parentBranch = thisNode.parentBranch;
                                 objectForCommonPattern.anotherBranch = thisNode.anotherBranch;
                                 objectForCommonPattern.childBranch = thisNode;
-                                thisNode.parentBranch = objectForCommonPattern; //I'm to lazy to use some constructor here
-                                thisNode.anotherBranch = objectForNewPattern;   //Plz don't hate me
+                                thisNode.parentBranch = objectForCommonPattern;
+                                thisNode.anotherBranch = objectForNewPattern;
                                 objectForNewPattern.parentBranch = thisNode;
 
                                 if (objectForCommonPattern.anotherBranch != null)
