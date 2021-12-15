@@ -373,6 +373,25 @@ class Program
                         Console.Clear();
                         break;
                     }
+                
+                case "LIST_EXISTING_TREES":
+                    {
+                        var treeNames = TrieSet.Keys.ToArray();
+                        int maxLen = treeNames.GetMaxStringLength();
+                        int counter = 1; int matchesQuantity = treeNames.Length;
+                        foreach(string treeName in treeNames)
+                        {
+                            Console.Write($"{treeName.PadRight(maxLen + 1)}");
+                            if(counter % 5 == 0 && counter != matchesQuantity) Console.WriteLine();
+                            counter++;    
+                        }
+                        if(counter == 0)
+                        {
+                            Console.WriteLine("*no trees yet exist*");
+                        }
+                        else Console.WriteLine();
+                        break;
+                    }
 
                 case "EXIT":
                     {
@@ -394,7 +413,7 @@ class Program
             Node testTree = new Node();
             TrieSet.Add(treeName, testTree);
 
-            string[] testWords = {"SomeText","Some", "SomeTex", "SomeTextAnd", "SomeTextAndOther", "SomeTextOr", "Different", "SomeTextAndOt", "Diff",
+            string[] testWords = {"SomeText", "Some", "m", "SomeTextAnd", "SomeTextAndOther", "SomeTextOr", "Different", "SomeTextAndOt", "Diff",
             "Lol", "Lolkek", "Lolkekcheburek", "Lolkekcheburs", "Lolkekchebur", "abc", "abcd", "abce", "abf", "ab", "stugl", "stus", "m", "str", "stug",
             "abc", "abcdefUCC", "abcdes", "abcdef", "abcffe", "abvdsf", "aghrg", "abcdggth", "b"};
 

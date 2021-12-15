@@ -24,6 +24,7 @@
                                                     + "- SEARCH [RANGE] set_name_1 [set_name_2 ...] [WHERE query] [ASC | DESC]\n"
                                                     + "         query:= WHERE BETWEEN \"from\",\"to\"  \\or\\  WHERE MATCH \"word\"\n"
                                                     + "- PRINT_TREE [RANGE] set_name_1 [set_name_2 ...]\n"
+                                                    + "- LIST_EXISTING_TREES\n"
                                                     + "System operations:\n"
                                                     + "- MENU\n"
                                                     + "- CLEAR\n"

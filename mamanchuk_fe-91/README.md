@@ -16,11 +16,10 @@ DEADlines:
 3. **25.12** or till the very end
     - PRINT_TREE and full UX
 
-Prefix Tree V3.0A
+Prefix Tree V3.1A
 ----------------
-Current update: new features introduced.
+Current update: list existing trees with the corresponding command.
 
-This is the fourth massive update of my original idea that is about implementation of a simple datastructure for the purpose of prefix tree.<br />
 Available concept of a command line.<br />
 Basic system operations. pTree operations, listed below.<br />
 Advanced logics that is being designed to work with user.
@@ -31,7 +30,8 @@ Operations with pTree sets available: <br />
     - `SEARCH [RANGE] set_name_1 [set_name_2 ...] [WHERE query] [ASC | DESC];` <br />
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`query:= WHERE BETWEEN "from","to" | WHERE MATCH "word"         ` <br />
     - `CONTAINS [RANGE] set_name_1 [set_name_2 ...] "word_1" ["word_2" ...]; ` <br />
-    - `PRINT_TREE [RANGE] set_name_1 [set_name_2 ...];                       ` 
+    - `PRINT_TREE [RANGE] set_name_1 [set_name_2 ...];                       ` <br />
+    - `LIST_EXISTING_TREES;`
 
 System operations: <br />
     - `MENU; ` <br />

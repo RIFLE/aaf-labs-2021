@@ -156,6 +156,13 @@ namespace Functions
                         else break;
                     }
 
+                case "LIST_EXISTING_TREES":
+                    {
+                        commandTemplate = new Regex(@"^LIST_EXISTING_TREES(\s|\t){0,};$");
+                        if (commandTemplate.IsMatch(cmdPrefix)) return RCStatus.REGEX_SUCCESS;
+                        else break;
+                    }
+
                 case "CREATE":
                     {
                         commandTemplate = new Regex(@"^CREATE(\s|\t){1,}(\w){1,}(\s|\t){0,};$");
